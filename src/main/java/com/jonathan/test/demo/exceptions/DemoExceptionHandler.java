@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @ControllerAdvice
 public class DemoExceptionHandler extends ResponseEntityExceptionHandler {
@@ -61,7 +58,17 @@ public class DemoExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         String userMessage = "Recurso não encontrado";
         String msgDeveloper = ex.toString();
-        List<GenericError> errors = Arrays.asList(new GenericError(userMessage, msgDeveloper));
+        List<GenericError> errors = Collections.singletonList(new GenericError(userMessage, msgDeveloper));
+        return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND,
+                request);
+    }
+    @ExceptionHandler(CategoryAlreadyExistException.class)
+    private ResponseEntity<Object> handleCategoryAlreadyExistException(
+            EmptyResultDataAccessException ex, WebRequest request
+    ) {
+        String userMessage = ex.getMessage();
+        String msgDeveloper = ex.getMessage();
+        List<GenericError> errors = Collections.singletonList(new GenericError(userMessage, msgDeveloper));
         return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST,
                 request);
     }
