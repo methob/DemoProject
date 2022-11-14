@@ -1,34 +1,36 @@
-package com.jonathan.test.demo.entity;
+package com.jonathan.test.demo.dto;
 
-import javax.persistence.*;
+import com.jonathan.test.demo.entity.Category;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
-import java.util.Objects;
-@Entity
-@Table(name = "produto")
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codigo")
+@ApiModel
+public class ProductDTO {
+    @ApiModelProperty
     private Long code;
-
-    @Column(name = "descricao")
+    @ApiModelProperty
     private String description;
-
-    @Column(name = "quantidade")
+    @ApiModelProperty
     private Integer amount;
-
-    @Column(name = "preco_custo")
+    @ApiModelProperty
     private BigDecimal priceCost;
-
-    @Column(name = "preco_venda")
+    @ApiModelProperty
     private BigDecimal priceSale;
-
-    @Column(name = "observacao")
+    @ApiModelProperty
     private String observation;
-
-    @ManyToOne
-    @JoinColumn(name = "codigo_categoria", referencedColumnName = "codigo")
+    @ApiModelProperty
     private Category category;
+
+    public ProductDTO(Long code, String description, Integer amount, BigDecimal priceCost, BigDecimal priceSale, String observation, Category category) {
+        this.code = code;
+        this.description = description;
+        this.amount = amount;
+        this.priceCost = priceCost;
+        this.priceSale = priceSale;
+        this.observation = observation;
+        this.category = category;
+    }
 
     public Long getCode() {
         return code;
@@ -84,18 +86,5 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return Objects.equals(code, product.code) && Objects.equals(description, product.description) && Objects.equals(amount, product.amount) && Objects.equals(priceCost, product.priceCost) && Objects.equals(priceSale, product.priceSale) && Objects.equals(observation, product.observation) && Objects.equals(category, product.category);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(code, description, amount, priceCost, priceSale, observation, category);
     }
 }
